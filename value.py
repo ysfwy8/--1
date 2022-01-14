@@ -1,11 +1,11 @@
 import json
 
-zb_id = "33627"
-cookie = json.loads(open("292070730.json", "r", encoding="utf-8").read())
-system_version = "10.0.0"
-app_v = "6270200"
-app_innerver = "6.27.0"
-phone = "HMA-AL00"
+zb_id = "33627"  # 装扮id
+cookie = json.loads(open("cookie.json", "r", encoding="utf-8").read())  # 
+system_version = "10.0.0"  # 安卓版本
+app_v = "6270200"  # APP版本
+app_innerver = "6.27.0"  # APP版本
+phone = "HMA-AL00"  # 手机型号
 
 
 mozilla = f"Mozilla/5.0 (Linux; Android {system_version}; {phone} Build/{phone}; wv)"
