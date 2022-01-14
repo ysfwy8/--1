@@ -1,12 +1,14 @@
 import json
 
-zb_id = "33627"  # 装扮id
+zb_id = "33801"  # 装扮id
 cookie = json.loads(open("cookie.json", "r", encoding="utf-8").read())  # 
 system_version = "10.0.0"  # 安卓版本
-app_v = "6270200"  # APP版本
-app_innerver = "6.27.0"  # APP版本
+app_v = "6470500"  # APP版本
+app_innerver = "6.57.0"  # APP版本
 phone = "HMA-AL00"  # 手机型号
 
+
+# Build的值在cookie里，如果没有，用buvid3代替
 
 mozilla = f"Mozilla/5.0 (Linux; Android {system_version}; {phone} Build/{phone}; wv)"
 app_le_web_kit = "AppleWebKit/537.36 (KHTML, like Gecko)"
