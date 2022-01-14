@@ -6,6 +6,9 @@ import re
 
 head = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:95.0) Gecko/20100101 Firefox/95.0"}
 
+def get_data_len(data):
+    return (len(data) * 2 - 1) + len("".join(list(data) + list(data.values())))
+
 
 def down_order():
     """ 下单 """
@@ -21,7 +24,9 @@ def down_order():
                     "coupon_token": "",
                     "hasBiliapp": "true",
                     "csrf": f"{cookie['bili_jct']}"}
-            r1 = requests.post(api, headers=header_1, cookies=cookie, data=data)
+            header_ = header_1
+            header_['Content-Length'] == str(get_data_len(data))
+            r1 = requests.post(api, headers=header_, cookies=cookie, data=data)
             print(r1.text)
             order_id = r1.json()['data']['order_id']
             if not order_id:
@@ -43,7 +48,9 @@ def confirm_order(order_id):
         print(f"获取pay_data... {a}")
         api = "https://api.bilibili.com/x/garb/trade/confirm"
         data = {"order_id": f"{order_id}", "csrf": f"{cookie['bili_jct']}"}
-        r1 = requests.post(api, headers=header_1, cookies=cookie, data=data).json()
+        header_ = header_1
+        header_['Content-Length'] == str(get_data_len(data))
+        r1 = requests.post(api, headers=header_, cookies=cookie, data=data).json()
         print(r1)
         pay_data = r1['data']['pay_data']
         if not pay_data:
