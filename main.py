@@ -62,7 +62,7 @@ def get_pay_data(data):
     }
     for li in data:
         data1[li] = data[li]
-    data1['sdkVersion'] = "1.4.9"
+    data1['sdkVersion'] = "1.4.9"  # 如果这个改变那是服务付款成功的
     data1['device'] = "ANDROID"
     data1['payChannel'] = "bp"
     data1['network'] = "WiFi"
@@ -90,7 +90,7 @@ def start_pay():
     pay_json = confirm_order(order_id)
     cookie_pay, pay_data = get_pay_data(pay_json)
     print(cookie_pay, pay_data)
-    pay(cookie_pay, pay_data)
+#     pay(cookie_pay, pay_data)
 
 
 def get_open_time():
@@ -110,7 +110,6 @@ def bili_time():
 
 def main():
     open_time = get_open_time()
-    # open_time = 1
     while True:
         bili_now_time = bili_time()
         time_string = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(bili_now_time))
