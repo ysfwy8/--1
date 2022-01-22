@@ -25,6 +25,7 @@ value_2_1 = f"mobi_app/android build/{app_v} channel/html5_search_baidu innerVer
 user_agent_1 = f"{mozilla1} {value_1_1} {value_1_2} {value_1_3} {value_1_4} {value_1_5}"
 user_agent_2 = f"{mozilla2} {value_2_1}"
 
+head = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:95.0) Gecko/20100101 Firefox/95.0"}
 
 header_1 = {
     "Accept-Encoding": "gzip",
