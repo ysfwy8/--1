@@ -6,53 +6,42 @@ import re
 
 head = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:95.0) Gecko/20100101 Firefox/95.0"}
 
-def get_data_len(data):
-    return (len(data) * 2 - 1) + len("".join(list(data) + list(data.values())))
-
 
 def down_order():
     """ 下单 """
+    api = "https://api.bilibili.com/x/garb/trade/create"
+    data = {
+        "item_id": f"{zb_id}",
+        "platform": "android",  # "platform": "android",
+        "currency": "bp",
+        "add_month": -1,
+        "buy_num": 1,
+        "coupon_token": "",
+        "hasBiliapp": "true",
+        "csrf": f"{cookie['bili_jct']}"
+    }
     a = 0
-    while True:
-        try:
-            api = "https://api.bilibili.com/x/garb/trade/create"
-            data = {"item_id": f"{zb_id}",
-                    "platform": "android",  # "platform": "android",
-                    "currency": "bp",
-                    "add_month": -1,
-                    "buy_num": 1,
-                    "coupon_token": "",
-                    "hasBiliapp": "true",
-                    "csrf": f"{cookie['bili_jct']}"}
-            header_ = header_1
-            header_['Content-Length'] == str(get_data_len(data))
-            r1 = requests.post(api, headers=header_, cookies=cookie, data=data)
-            print(r1.text)
-            order_id = r1.json()['data']['order_id']
-            if not order_id:
-                continue
-            return order_id
-        except:
-            print(f"下单失败 重试:{a}次")
-            if a >= 10:
-                return "下单失败"
+    while a < 10:
+        r1 = requests.post(api, headers=header_1, cookies=cookie, data=data)
+        print(r1.text)
+        if r1.json()['code'] != 0:
             a += 1
-            time.sleep(0.1)
+            continue
+        return r1.json()['data']['order_id']
+    return False
 
 
 def confirm_order(order_id):
     """ 确认订单 """
     a = 0
+    api = "https://api.bilibili.com/x/garb/trade/confirm"
+    data = {"order_id": f"{order_id}", "csrf": f"{cookie['bili_jct']}"}
     while True:
         a += 1
         print(f"获取pay_data... {a}")
-        api = "https://api.bilibili.com/x/garb/trade/confirm"
-        data = {"order_id": f"{order_id}", "csrf": f"{cookie['bili_jct']}"}
-        header_ = header_1
-        header_['Content-Length'] == str(get_data_len(data))
-        r1 = requests.post(api, headers=header_, cookies=cookie, data=data).json()
-        print(r1)
-        pay_data = r1['data']['pay_data']
+        r1 = requests.post(api, headers=header_1, cookies=cookie, data=data)
+        print(r1.text)
+        pay_data = r1.json()['data']['pay_data']
         if not pay_data:
             continue
         pay_json = json.loads(pay_data)
@@ -90,14 +79,14 @@ def pay(cookie_pay, data):
 
 def start_pay():
     order_id = down_order()
-    if "下单失败" == order_id:
-        print("寄了")
-        return
+    if order_id is False:
+        return "无了"
     print(order_id)
     pay_json = confirm_order(order_id)
     cookie_pay, pay_data = get_pay_data(pay_json)
     print(cookie_pay, pay_data)
-#     pay(cookie_pay, pay_data)
+    """ 付款, 用的时候再开, 只要验证sdkVersion是否正确就行 """
+    # pay(cookie_pay, pay_data)
 
 
 def get_open_time():
@@ -125,9 +114,9 @@ def main():
             s = time.time()
             start_pay()
             e = time.time()
-            input(f"-------购买完成 耗时:{e - s}秒")
+            print(f"-------购买完成 耗时:{e - s}秒-------")
             break
-        time.sleep(0.5)
+        time.sleep(0.3)
 
 
 if __name__ == '__main__':
