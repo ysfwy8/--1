@@ -1,28 +1,30 @@
 import json
 
-zb_id = "33801"  # 装扮id
-cookie = json.loads(open("cookie.json", "r", encoding="utf-8").read())  # 
-system_version = "10.0.0"  # 安卓版本
-app_v = "6470500"  # APP版本
-app_innerver = "6.57.0"  # APP版本
+zb_id = "33182"  # 装扮id(33182: 草莓大福)
+cookie = json.loads(open("cookie.json", "r", encoding="utf-8").read())
+system = "10.0.0"  # 安卓系统版本
+app_v = "6580300"  # APP版本1
+app_innerver = "6.58.0"  # APP版本2
 phone = "HMA-AL00"  # 手机型号
 
 
-# Build的值在cookie里，如果没有，用buvid3代替
+Buvid_value_1 = f"Build/{cookie['Buvid']} " if 'Buvid' in cookie else ""
 
-mozilla = f"Mozilla/5.0 (Linux; Android {system_version}; {phone} Build/{phone}; wv)"
-app_le_web_kit = "AppleWebKit/537.36 (KHTML, like Gecko)"
-version = "Version/4.0 Chrome/74.0.3729.136 Mobile Safari/537.36 os/android model/{phone}"
-app_version = f"build/{app_v} osVer/{system_version} sdkInt/{29} network/2 BiliApp/{app_v}"
-mobi_app = f"mobi_app/android channel/yingyongbao Buvid/{cookie['Buvid']} innerVer/{app_v}"
-locale = f"c_locale/zh_CN s_locale/zh_CN 6.27.0 os/android model/{phone} mobi_app/android build/{app_v}"
-channel = f"channel/yingyongbao innerVer/{app_v} osVer/{system_version} network/2"
 
-mozilla_ = f"Mozilla/5.0 BiliDroid/{app_innerver} (bbcallen@gmail.com) os/android model/{phone}"
-mobi_app_ = f"mobi_app/android build/{app_v} channel/yingyongbao innerVer/{app_v} osVer/{system_version} network/2"
+mozilla1 = f"Mozilla/5.0 (Linux; Android {system}; {phone} Build/{phone}; wv) AppleWebKit/537.36 (KHTML, like Gecko)"
+value_1_1 = f"Version/4.0 Chrome/74.0.3729.136 Mobile Safari/537.36 os/android model/{phone}"
+value_1_2 = f"build/{app_v} osVer/{system} sdkInt/{29} network/2 BiliApp/{app_v}"
+value_1_3 = f"mobi_app/android channel/html5_search_baidu {Buvid_value_1}innerVer/{app_v}"
+value_1_4 = f"c_locale/zh_CN s_locale/zh_CN 6.27.0 os/android model/{phone} mobi_app/android build/{app_v}"
+value_1_5 = f"channel/html5_search_baidu innerVer/{app_v} osVer/{system} network/2"
 
-user_agent_1 = f"{mozilla} {app_le_web_kit} {version} {app_version} {mobi_app} {locale} {channel}"
-user_agent_2 = f"{mozilla_} {mobi_app_}"
+mozilla2 = f"Mozilla/5.0 BiliDroid/{app_innerver} (bbcallen@gmail.com) os/android model/{phone}"
+value_2_1 = f"mobi_app/android build/{app_v} channel/html5_search_baidu innerVer/{app_v} osVer/{system} network/2"
+
+
+user_agent_1 = f"{mozilla1} {value_1_1} {value_1_2} {value_1_3} {value_1_4} {value_1_5}"
+user_agent_2 = f"{mozilla2} {value_2_1}"
+
 
 header_1 = {
     "Accept-Encoding": "gzip",
@@ -41,11 +43,12 @@ header_2 = {
     "Content-Type": "application/json",
     "APP-KEY": "android",
     "buildId": app_v,
-    "Buvid": cookie['Buvid'],  # Buvid
     "Connection": "Keep-Alive",
     "Host": "pay.bilibili.com"
 }
+if "Buvid" in cookie:
+    header_2['Buvid'] = cookie['Buvid']
 
 
-# print(header_1)
-# print(header_2)
+print(header_1)
+print(header_2)
