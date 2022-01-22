@@ -1,5 +1,8 @@
 ```pip install requests```
 
+
+不用login.py不用装下面两
+
 ```pip install opencv-python```
 
 ```pip install opencv-python qrcode pillow pyzbar```
