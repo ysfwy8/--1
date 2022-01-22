@@ -1,11 +1,15 @@
-from value import header_1, header_2, app_v, zb_id, cookie
+from value import header_1, header_2, app_v, zb_id, cookie, head
 import requests
 import json
 import time
 import re
 
-head = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:95.0) Gecko/20100101 Firefox/95.0"}
 
+def verify_cookie():
+    nav_url = "https://api.bilibili.com/x/web-interface/nav"
+    r1 = requests.get(nav_url, cookies=cookie, headers=head)
+    print(r1.text)
+    
 
 def down_order():
     """ 下单 """
