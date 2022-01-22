@@ -1,5 +1,6 @@
 import json
 import re
+#cookie.txt 浏览器复制
 
 f = open("cookie.txt", "r", encoding="utf-8")
 cookie_str = f.read()
