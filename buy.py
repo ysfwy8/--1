@@ -58,6 +58,9 @@ class BUY:
             "csrf": f"{self.cookie['bili_jct']}"
         }
 
+        if self.verify_cookie():
+            input("cookie失效")
+
         print(
             f"装扮id:{self.zb_id}\n"
             f"cookie:{self.cookie}\n"
@@ -74,7 +77,10 @@ class BUY:
     def verify_cookie(self):
         nav_url = "https://api.bilibili.com/x/web-interface/nav"
         r1 = requests.get(nav_url, cookies=self, headers=self.header)
+        if r1.json()['code'] != 0:
+            return False
         print(r1.text)
+        return True
 
     def down_order(self):
         """ 下单 """
@@ -112,7 +118,7 @@ class BUY:
             "appName": "tv.danmaku.bili",
             "appVersion": self.app_v1,
             "payChannelId": "99",
-            "sdkVersion": "1.4.9",  # 如果这个改变那是服务付款成功的
+            "sdkVersion": "1.4.9",  # 如果这个改变那是不会付款成功的
             "device": "ANDROID",
             "payChannel": "bp",
             "network": "WiFi"
