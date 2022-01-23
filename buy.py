@@ -57,9 +57,7 @@ class BUY:
             "hasBiliapp": "true",
             "csrf": f"{self.cookie['bili_jct']}"
         }
-        
-        print(self.verify_cookie())
-        
+
         print(
             f"装扮id:{self.zb_id}\n"
             f"cookie:{self.cookie}\n"
@@ -114,7 +112,7 @@ class BUY:
             "appName": "tv.danmaku.bili",
             "appVersion": self.app_v1,
             "payChannelId": "99",
-            "sdkVersion": "1.4.9",  # 如果这个改变那是不会付款成功的
+            "sdkVersion": "1.4.9",  # 如果这个改变那是服务付款成功的
             "device": "ANDROID",
             "payChannel": "bp",
             "network": "WiFi"
@@ -160,6 +158,14 @@ class START(BUY):
         r1 = requests.get(api, headers=self.header).json()
         return int(r1['data']['now'])
 
+    def get_zb_number(self):
+        url = f"https://api.bilibili.com/x/garb/v3/user/asset?part=suit&item_id={self.zb_id}"
+        r1 = requests.get(url, headers=self.header, cookies=self.cookie).json()
+        number = r1['data']['fan']['number']
+        name = r1['data']['fan']['name']
+        print(name, number)
+        return name, number
+
     def wait_time(self, open_time):
         now_time = time.time()
         remaining = round(open_time - now_time)
@@ -186,6 +192,7 @@ class START(BUY):
 
 
 zb_ = START("装扮id", "cookie文件路径", "app详细版本", "app版本", "安卓系统版本", "手机型号")
+# "装扮id", "cookie文件路径", "app详细版本", "app版本", "安卓系统版本", "手机型号"
 # 演示 START("3898", "./test.json", "6580300", "6.58.0", "10.0.0", "HMA-AL00")
 zb_.start_buy(pay=False)  # pay=True时会实现付款, False时则不会, False主要测试sdkVersion用
-# zb_.start_buy(pay=True)
+zb_.get_zb_number()
