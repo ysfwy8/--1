@@ -58,7 +58,7 @@ class BUY:
             "csrf": f"{self.cookie['bili_jct']}"
         }
 
-        if self.verify_cookie():
+        if not self.verify_cookie():
             input("cookie失效")
 
         print(
@@ -76,7 +76,7 @@ class BUY:
 
     def verify_cookie(self):
         nav_url = "https://api.bilibili.com/x/web-interface/nav"
-        r1 = requests.get(nav_url, cookies=self, headers=self.header)
+        r1 = requests.get(nav_url, cookies=self.cookie, headers=self.header)
         if r1.json()['code'] != 0:
             return False
         print(r1.text)
@@ -167,6 +167,10 @@ class START(BUY):
     def get_zb_number(self):
         url = f"https://api.bilibili.com/x/garb/v3/user/asset?part=suit&item_id={self.zb_id}"
         r1 = requests.get(url, headers=self.header, cookies=self.cookie).json()
+        code = r1['code']
+        if code != 0:
+            print("空")
+            return None, None
         number = r1['data']['fan']['number']
         name = r1['data']['fan']['name']
         print(name, number)
